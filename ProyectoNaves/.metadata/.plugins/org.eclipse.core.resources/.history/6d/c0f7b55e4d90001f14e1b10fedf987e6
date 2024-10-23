@@ -1,0 +1,5 @@
+package com.org.plane.aop;
+
+public class ShipLoggingAspect {
+
+}

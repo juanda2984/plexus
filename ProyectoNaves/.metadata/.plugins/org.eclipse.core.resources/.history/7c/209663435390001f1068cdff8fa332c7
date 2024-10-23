@@ -1,0 +1,20 @@
+package com.org.plane;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.web.servlet.MockMvc;
+
+
+public class ShipControllerIntegrationTest {
+	@Autowired
+    private MockMvc mockMvc;
+
+    @Test
+    public void testSearchShips() throws Exception {
+        mockMvc.perform(get("/ships/search?name=wing"))
+               .andExpect(status().isOk());
+    }
+}

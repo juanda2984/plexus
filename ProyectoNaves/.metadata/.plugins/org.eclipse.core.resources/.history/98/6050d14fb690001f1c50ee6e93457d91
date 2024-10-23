@@ -1,0 +1,80 @@
+package com.org.plane.controller;
+
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.org.plane.model.Ship;
+import com.org.plane.service.impl.ShipServiceImpl;
+import com.org.plane.util.KafkaProducer;
+
+@RestController
+@RequestMapping("/ships")
+public class ShipController {
+	
+	private final ShipServiceImpl shipService;
+    private final KafkaProducer shipKafkaProducer;
+
+    @Autowired
+    public ShipController(ShipServiceImpl shipService, KafkaProducer shipKafkaProducer) {
+        this.shipService = shipService;
+        this.shipKafkaProducer = shipKafkaProducer;
+    }
+
+    @GetMapping
+    public Page<Ship> getAllShips(Pageable pageable) {
+        return shipService.findAll(pageable);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Ship> getShipById(@PathVariable Long id) {
+        Optional<Ship> ship = shipService.findById(id);
+        return ship.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/search")
+    public Page<Ship> searchByName(@RequestParam String name, Pageable pageable) {
+        return shipService.findByName(name, pageable);
+    }
+
+    @PostMapping
+    public Ship createShip(@RequestBody Ship ship) {
+    	Ship createdShip = shipService.save(ship);
+        shipKafkaProducer.sendMessage("ship-topic", "Created Ship: " + createdShip.toJson());
+        return createdShip;
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Ship> updateShip(@PathVariable Long id, @RequestBody Ship shipDetails) {
+        Optional<Ship> ship = shipService.findById(id);
+        if (!ship.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+        shipDetails.setId(id);
+        shipKafkaProducer.sendMessage("ship-topic", "Updated Ship: " + shipDetails.toJson());
+        return ResponseEntity.ok(shipService.save(shipDetails));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteShip(@PathVariable Long id) {
+    	Optional<Ship> ship = shipService.findById(id);
+        if (!ship.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+        shipKafkaProducer.sendMessage("ship-topic", "Delete Ship: " + ship.get().toJson());
+    	shipService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+}

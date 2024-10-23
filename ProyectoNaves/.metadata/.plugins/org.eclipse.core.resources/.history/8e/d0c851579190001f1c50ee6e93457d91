@@ -1,0 +1,5 @@
+package com.org.plane.security;
+
+public class SwaggerConfig {
+
+}

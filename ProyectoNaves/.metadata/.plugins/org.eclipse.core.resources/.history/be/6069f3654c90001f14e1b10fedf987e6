@@ -1,0 +1,5 @@
+package com.org.plane.repository;
+
+public class ShipRepository {
+
+}

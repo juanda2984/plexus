@@ -1,0 +1,40 @@
+package com.org.plane;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.anyLong;
+
+import java.util.Optional;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import com.org.plane.model.Ship;
+import com.org.plane.repository.ShipRepository;
+import com.org.plane.service.ShipService;
+
+@SpringBootTest
+class PlaneStarApplicationTests {
+
+	@Mock
+	private ShipRepository shipRepository;
+
+	@InjectMocks
+	private ShipService shipService;
+
+	@BeforeEach
+	void setUp() {
+		MockitoAnnotations.openMocks(this);
+	}
+
+	@Test
+	void testFindById() {
+		Mockito.when(shipRepository.findById(anyLong())).thenReturn(Optional.of(new Ship()));
+		assertTrue(shipService.findById(1L).isPresent());
+	}
+
+}

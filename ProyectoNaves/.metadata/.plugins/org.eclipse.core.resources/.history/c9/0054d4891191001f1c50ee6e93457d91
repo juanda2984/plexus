@@ -1,0 +1,62 @@
+# **PlaneStar API**
+
+## **Descripción**
+
+PlaneStar es una API RESTful que gestiona información sobre naves espaciales de diversas series y películas. Permite realizar operaciones CRUD (Crear, Leer, Actualizar y Eliminar) sobre las naves, así como buscar naves por su nombre. Además, está integrada con **Apache Kafka** para la gestión de eventos asíncronos relacionados con la creación, actualización o eliminación de naves. El proyecto implementa seguridad con **JWT (JSON Web Tokens)** para proteger los endpoints y la autenticación de usuarios.
+
+### **Características principales:**
+- **Operaciones CRUD completas** sobre las naves espaciales.
+- **Búsqueda paginada** de naves por nombre.
+- **Eventos de Kafka**: Envío de eventos a Kafka cuando una nave es creada, actualizada o eliminada.
+- **Seguridad JWT**: Proceso de autenticación y autorización para los endpoints.
+- **Documentación interactiva** mediante **Swagger/OpenAPI**.
+
+---
+
+## **Índice**
+
+1. [Tecnologías utilizadas](#1-tecnologías-utilizadas)
+2. [Requisitos previos](#2-requisitos-previos)
+3. [Instalación y ejecución](#3-instalación-y-ejecución)
+4. [Uso de la API](#4-uso-de-la-api)
+    - [Endpoints CRUD](#41-endpoints-crud)
+    - [Búsqueda de naves](#42-búsqueda-de-naves-por-nombre-get-shipsearch)
+    - [Autenticación JWT](#43-autenticación-jwt)
+5. [Configuración](#5-configuración)
+    - [Configuración de Kafka](#51-configuración-de-kafka)
+    - [Configuración de la base de datos](#52-configuración-de-la-base-de-datos)
+6. [Documentación API](#6-documentación-api)
+7. [Estructura del proyecto](#7-estructura-del-proyecto)
+8. [Contribuciones](#8-contribuciones)
+9. [Licencia](#9-licencia)
+
+---
+
+## 1. Tecnologías utilizadas
+
+- **Java 17**
+- **Spring Boot 3.1.4**
+- **Spring Data JPA** para el manejo de la base de datos.
+- **H2 Database** como base de datos en memoria para el entorno de desarrollo.
+- **Apache Kafka** para la mensajería asíncrona.
+- **Spring Security + JWT** para autenticación y autorización.
+- **Swagger/OpenAPI** para la documentación y pruebas interactivas de la API.
+- **Maven** para la gestión de dependencias y construcción del proyecto.
+
+---
+
+## **2. Requisitos previos**
+
+- **Java 17** o superior.
+- **Docker** y **Docker Compose** instalados.
+- **Maven** para construir el proyecto.
+
+---
+
+## **3. Instalación y ejecución**
+
+### **Clonar el repositorio:**
+
+```bash
+git clone https://github.com/tu_usuario/planeStar.git
+cd planeStar

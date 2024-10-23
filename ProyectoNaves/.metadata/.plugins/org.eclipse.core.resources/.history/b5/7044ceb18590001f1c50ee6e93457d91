@@ -1,0 +1,76 @@
+package com.org.plane.security;
+
+import java.util.Date;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig {
+
+    private final String SECRET_KEY = "my_secret_key";  // Cambia por una clave más robusta
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+            .csrf(csrf -> csrf.disable())  // Deshabilitar CSRF
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/authenticate").permitAll()  // Permitir acceso a la ruta de autenticación
+                .anyRequest().authenticated()  // Cualquier otra solicitud requiere autenticación
+            )
+            .sessionManagement(session -> session
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)  // Sin estado
+            );
+
+        http.addFilterBefore(jwtRequestFilter(), UsernamePasswordAuthenticationFilter.class);  // Agregar el filtro JWT
+        return http.build();
+    }
+
+    @Bean
+    public UserDetailsService userDetailsService() {
+        var user = User.withUsername("user")
+            .password("{noop}password")  // NoOpEncoder para simplificar
+            .roles("USER")
+            .build();
+        return new InMemoryUserDetailsManager(user);
+    }
+
+    @Bean
+    public AuthenticationManager authManager(HttpSecurity http) throws Exception {
+        AuthenticationManagerBuilder authenticationManagerBuilder = 
+            http.getSharedObject(AuthenticationManagerBuilder.class);
+        authenticationManagerBuilder.userDetailsService(userDetailsService()).passwordEncoder(NoOpPasswordEncoder.getInstance());
+        return authenticationManagerBuilder.build();
+    }
+
+    // Generar JWT Token
+    public String generateToken(String username) {
+        return Jwts.builder()
+            .setSubject(username)
+            .setIssuedAt(new Date())
+            .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))  // 10 horas
+            .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
+            .compact();
+    }
+
+    // Crear el filtro JWT
+    @Bean
+    public JwtRequestFilter jwtRequestFilter() {
+        return new JwtRequestFilter();
+    }
+}

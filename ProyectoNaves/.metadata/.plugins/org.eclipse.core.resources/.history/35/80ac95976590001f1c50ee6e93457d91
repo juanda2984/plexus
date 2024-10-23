@@ -1,0 +1,13 @@
+services:
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+  db:
+    image: h2:latest
+    ports:
+      - "9092:9092"
+    environment:
+      H2_OPTIONS: '-tcp -tcpAllowOthers'

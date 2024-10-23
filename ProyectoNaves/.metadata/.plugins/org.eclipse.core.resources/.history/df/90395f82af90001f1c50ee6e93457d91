@@ -1,0 +1,31 @@
+spring.application.name=planeStar
+
+# Configuraciones de la base de datos H2
+spring.datasource.url=jdbc:h2:mem:planeStardb
+spring.datasource.driverClassName=org.h2.Driver
+spring.datasource.username=sa
+spring.datasource.password=password
+spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+spring.h2.console.enabled=true
+spring.h2.console.path=/h2-console
+
+# Configuraciones de JPA
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+
+# Configuracion de Liquibase
+spring.liquibase.change-log=classpath:db/changelog/db.changelog-master.xml
+
+# Configuraciones de SpringDoc
+springdoc.api-docs.path=/api-docs
+logging.level.org.springframework.security=DEBUG
+
+# Configuraciones de Kafka
+spring.kafka.bootstrap-servers=kafka:9093
+spring.kafka.consumer.group-id=ship-group
+spring.kafka.consumer.auto-offset-reset=earliest
+
+# Propiedades adicionales
+app.user.username=user
+app.user.password=password
+app.secret.key=clave secreta

@@ -1,0 +1,7 @@
+com\org\plane\controller\ShipController.class
+com\org\plane\repository\ShipRepository.class
+com\org\plane\model\Ship.class
+com\org\plane\service\ShipService.class
+com\org\plane\aop\ShipLoggingAspect.class
+com\org\plane\PlaneStarApplication.class
+com\org\plane\exception\GlobalExceptionHandler.class
