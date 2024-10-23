@@ -33,7 +33,7 @@ public class ShipController {
     private final KafkaProducer shipKafkaProducer;
 
     @Autowired
-    public ShipController(ShipServiceImpl shipService, KafkaProducer shipKafkaProducer) {
+    public ShipController(ShipServiceImpl shipService, @Autowired(required = false)KafkaProducer shipKafkaProducer) {
         this.shipService = shipService;
         this.shipKafkaProducer = shipKafkaProducer;
     }

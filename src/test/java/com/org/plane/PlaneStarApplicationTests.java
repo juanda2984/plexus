@@ -12,12 +12,14 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import com.org.plane.model.Ship;
 import com.org.plane.repository.ShipRepository;
 import com.org.plane.service.impl.ShipServiceImpl;
 
 @SpringBootTest
+@ActiveProfiles("test")
 class PlaneStarApplicationTests {
 
 	@Mock
