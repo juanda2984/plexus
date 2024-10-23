@@ -27,8 +27,6 @@ PlaneStar es una API RESTful que gestiona información sobre naves espaciales de
     - [Configuración de la base de datos](#52-configuración-de-la-base-de-datos)
 6. [Documentación API](#6-documentación-api)
 7. [Estructura del proyecto](#7-estructura-del-proyecto)
-8. [Contribuciones](#8-contribuciones)
-9. [Licencia](#9-licencia)
 
 ---
 
@@ -276,21 +274,38 @@ planeStar/
 ├── src/
 │   ├── main/
 │   │   ├── java/com/org/plane/
-│   │   │   ├── controller/             # Controladores REST
-│   │   │   ├── model/                  # Modelos de datos (entidades JPA)
-│   │   │   ├── repository/             # Repositorios para la interacción con la base de datos
-│   │   │   ├── service/                # Servicios que contienen la lógica de negocio
-│   │   │   │   ├── kafka/              # Productores y consumidores de eventos Kafka
-│   │   │   │   ├── security/           # Configuración de seguridad JWT
-│   ├── resources/                      # Archivos de configuración
-│   │   ├── application.properties      # Configuración de la aplicación
-├── docker-compose.yml                  # Configuración de los servicios Docker
-├── pom.xml                             # Archivo de dependencias Maven
-└── README.md                           # Este archivo
+│   │   │   ├── PlaneStarApplication.java
+│   │   │   ├── aop/
+│   │   │   │   └── ShipLoggingAspect.java
+│   │   │   ├── controller/
+│   │   │   │   └── ShipController.java
+│   │   │   ├── exception/
+│   │   │   │   └── GlobalExceptionHandler.java
+│   │   │   ├── model/
+│   │   │   │   └── Ship.java
+│   │   │   ├── repository/
+│   │   │   │   └── ShipRepository.java
+│   │   │   ├── security/
+│   │   │   │   ├── AuthController.java
+│   │   │   │   ├── AuthRequest.java
+│   │   │   │   ├── JwtRequestFilter.java
+│   │   │   │   └── SecurityConfig.java
+│   │   │   ├── service/
+│   │   │   │   ├── ShipService.java
+│   │   │   │   └── impl/
+│   │   │   │       └── ShipServiceImpl.java
+│   │   │   └── util/
+│   │   │       ├── KafkaConfig.java
+│   │   │       ├── KafkaConsumer.java
+│   │   │       ├── KafkaProducer.java
+│   │   │       └── SwaggerConfig.java
+│   │   └── resources/
+│   │       ├── application.properties
+│   │       └── db/changelog/
+│   │           └── db.changelog-master.xml
+│   └── test/java/com/org/plane/
+│       ├── PlaneStarApplicationTests.java
+│       └── ShipControllerIntegrationTest.java
+├── target/
+└── README.md                 									
 ```
-
-## **8. Contribuciones**
-Las contribuciones son bienvenidas. Si deseas contribuir a este proyecto, abre un issue o realiza un pull request con tus cambios propuestos.
-
-## **9. Licencia**
-Este proyecto está licenciado bajo los términos de la MIT License.

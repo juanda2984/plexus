@@ -1,5 +1,0 @@
-package com.org.plane.exception;
-
-public class GlobalExceptionHandler {
-
-}
